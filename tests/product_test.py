@@ -22,3 +22,8 @@ class ProductTestCase(BaseTestCase):
         response=self.get('/api/v1/products')
         self.assertEqual(response.status_code,200)
         self.assertEqual(response.mimetype,'application/json')
+
+    def test_get_specific_product(self):
+        response=self.get('/api/v1/products/1')
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.mimetype,'application/json')
