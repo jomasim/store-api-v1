@@ -9,6 +9,8 @@ class Product(Resource):
 
     def post(self):
         data = request.get_json()
+        if not data:
+            return make_response(jsonify({'error': 'invalid data'}), 422)
         product_id = len(products)+1
         product = {'id': product_id, 'name': data['name'], 'category': data['category'],
                    'description': data['description'],
