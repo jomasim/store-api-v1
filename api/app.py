@@ -7,7 +7,11 @@ api = Api(app)
 if __name__ == '__main__':
     app.run(debug=True)
 
-api.add_resource(Product, '/api/v1/products/')
-api.add_resource(Product, '/api/v1/products/<int:product_id>/')
-api.add_resource(Sales, '/api/v1/sales/')
-api.add_resource(Sales, '/api/v1/sales/<int:sales_id>/')
+api.add_resource(Product, '/api/v1/products/',
+                 strict_slashes=False, endpoint='products')
+api.add_resource(Product, '/api/v1/products/<int:product_id>/',
+                 strict_slashes=False, endpoint='product_by_id')
+api.add_resource(Sales, '/api/v1/sales/',
+                 strict_slashes=False, endpoint='sales')
+api.add_resource(Sales, '/api/v1/sales/<int:sales_id>/',
+                 strict_slashes=False, endpoint='sale_by_id')
