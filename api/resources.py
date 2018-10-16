@@ -9,7 +9,8 @@ class Product(Resource):
 
     def post(self):
         data = request.get_json()
-        product = {'name': data['name'], 'category': data['category'],
+        product_id = len(products)+1
+        product = {'id': product_id, 'name': data['name'], 'category': data['category'],
                    'description': data['description'],
                    'price': data['price']
                    }

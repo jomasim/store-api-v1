@@ -4,7 +4,7 @@ from tests.base_test import BaseTestCase
 
 class ProductTestCase(BaseTestCase):
     def test_creating_product(self):
-        new_product = {'name': 'shirt', 'category': 'apparel', 'description': {
+        new_product = {'id':'1','name': 'shirt', 'category': 'apparel', 'description': {
             'color': 'black',
             'size': '35',
             'gender': 'male'
