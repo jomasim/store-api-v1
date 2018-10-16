@@ -11,3 +11,5 @@ class ProductTestCase(BaseTestCase):
         }, 'price': '1200'}
         response = self.post('/api/v1/products', data=new_product)
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.mimetype,'application/json')
+    
