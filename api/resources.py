@@ -5,7 +5,7 @@ products = []
 
 class Product(Resource):
     def get(self):
-        pass
+        
 
     def post(self):
         data = request.get_json()
