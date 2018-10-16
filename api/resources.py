@@ -5,7 +5,7 @@ products = []
 
 class Product(Resource):
     def get(self):
-        
+        return make_response(jsonify({'products': products}), 200)
 
     def post(self):
         data = request.get_json()
