@@ -14,7 +14,7 @@ class Product(Resource):
         product_id = len(products)+1
         product = {'id': product_id, 'name': data['name'], 'category': data['category'],
                    'description': data['description'],
-                   'price': data['price']
+                   'price': data['price'], 'quantity': data['quantity']
                    }
         products.append(product)
         return make_response(jsonify({'products': products}), 201)

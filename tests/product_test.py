@@ -8,7 +8,7 @@ class ProductTestCase(BaseTestCase):
             'color': 'black',
             'size': '35',
             'gender': 'male'
-        }, 'price': '1200'}
+        }, 'price': '1200','quanity':'10'}
         response = self.post('/api/v1/products', data=new_product)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.mimetype,'application/json')
