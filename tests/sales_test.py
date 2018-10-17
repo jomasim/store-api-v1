@@ -21,5 +21,10 @@ class SaleTestCase(BaseTestCase):
         }
 
         response=self.post('api/v1/sales/',new_sale)
-
+        self.assertEqual(response.mimetype,'application/json')   
         self.assertEqual(response.status_code,201)
+
+    def test_for_empty_data(self):
+        response=self.post('/api/v1/products', data={})
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response.mimetype,'application/json')    
