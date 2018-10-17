@@ -39,3 +39,9 @@ class SaleTestCase(BaseTestCase):
         response=self.get('/api/v1/sales/1')
         self.assertEqual(response.status_code,200)
         self.assertEqual(response.mimetype,'application/json')
+
+    def test_get_non_existing_sale(self):
+        response=self.get('/api/v1/sales/199434')
+        self.assertEqual(response.status_code,404)
+        self.assertEqual(json.loads(response.data),{'error':'sale record not found'})
+        self.assertEqual(response.mimetype,'application/json')
