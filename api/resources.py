@@ -11,6 +11,21 @@ sample = {'id': '1', 'name': 'shirt', 'category': 'apparel', 'description': {
             'gender': 'male'
 }, 'price': '1200', 'quantity': '10'}
 
+''' sample sale record '''
+
+
+sample_sale = {
+            'id': '1', 
+            'date_created': '12/7/2008', 
+            'user': 'attendant1',
+            'line_items':{
+                'products':{
+                    'product_id':'1',
+                    'item_count':'2',
+                    'selling_price':'1200'
+                }
+            }
+        }
 
 class Product(Resource):
     def get(self, product_id=None):
@@ -42,8 +57,10 @@ class Product(Resource):
 
 
 class Sales(Resource):
-    def get(self):
-        pass
+    def get(self,sale_id=None):
+      
+        return make_response(jsonify({'sales': sales}), 200)
+
 
     def post(self):
         data = request.get_json()
