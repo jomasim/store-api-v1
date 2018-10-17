@@ -1,6 +1,7 @@
 from flask import jsonify, make_response, request
 from flask_restful import Resource
 products = []
+sales = []
 
 ''' sample product dict '''
 
@@ -10,6 +11,21 @@ sample = {'id': '1', 'name': 'shirt', 'category': 'apparel', 'description': {
             'gender': 'male'
 }, 'price': '1200', 'quantity': '10'}
 
+''' sample sale record '''
+
+
+sample_sale = {
+            'id': '1', 
+            'date_created': '12/7/2008', 
+            'user': 'attendant1',
+            'line_items':{
+                'products':{
+                    'product_id':'1',
+                    'item_count':'2',
+                    'selling_price':'1200'
+                }
+            }
+        }
 
 class Product(Resource):
     def get(self, product_id=None):
@@ -19,7 +35,7 @@ class Product(Resource):
             products.append(sample)
 
             ''' search for product  using product_id '''
-            
+
             product = [
                 product for product in products if product['id'] == str(product_id)]
             if not product:
@@ -41,8 +57,18 @@ class Product(Resource):
 
 
 class Sales(Resource):
-    def get(self):
-        pass
+    def get(self,sale_id=None):
+      
+        return make_response(jsonify({'sales': sales}), 200)
+
 
     def post(self):
-        pass
+        data = request.get_json()
+        if not data:
+            return make_response(jsonify({'error': 'invalid data'}), 422)
+        sale_id = len(sales)+1
+        sale = {'id': sale_id, 'user': data['user'], 'date_created': data['date_created'],
+                   'line_items': data['line_items'],
+                   }
+        sales.append(sale)
+        return make_response(jsonify({'message':'sale record created successfully'}), 201)
