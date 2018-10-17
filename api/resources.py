@@ -54,4 +54,4 @@ class Sales(Resource):
                    'line_items': data['line_items'],
                    }
         sales.append(sale)
-        return make_response(jsonify({'sales': sales}), 201)
+        return make_response(jsonify({'message':'sale record created successfully'}), 201)
