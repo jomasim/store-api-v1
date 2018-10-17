@@ -1,39 +1,16 @@
 from flask import jsonify, make_response, request
 from flask_restful import Resource
-products = []
-sales = []
-
-''' sample product dict '''
-
-sample = {'id': '1', 'name': 'shirt', 'category': 'apparel', 'description': {
-    'color': 'black',
-    'size': '35',
-            'gender': 'male'
-}, 'price': '1200', 'quantity': '10'}
-
-''' sample sale record '''
+from models.models import Product,Sales
+products = Product.all()
+sales = Sales.all()
 
 
-sample_sale = {
-            'id': '1', 
-            'date_created': '12/7/2008', 
-            'user': 'attendant1',
-            'line_items':{
-                'products':{
-                    'product_id':'1',
-                    'item_count':'2',
-                    'selling_price':'1200'
-                }
-            }
-        }
-
-class Product(Resource):
+class ProductController(Resource):
     def get(self, product_id=None):
         if not product_id:
             return make_response(jsonify({'products': products}), 200)
         else:
-            products.append(sample)
-
+           
             ''' search for product  using product_id '''
 
             product = [
@@ -56,14 +33,12 @@ class Product(Resource):
         return make_response(jsonify({'products': products}), 201)
 
 
-class Sales(Resource):
+class SalesController(Resource):
     def get(self,sale_id=None):
 
         if not sale_id:
             return make_response(jsonify({'sales': sales}), 200)
         else:
-            sales.append(sample_sale)
-        
             ''' search sale by sale id '''
             sale=[sale for sale in sales if sale['id']==str(sale_id)]
             if not sale:
