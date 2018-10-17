@@ -58,8 +58,22 @@ class Product(Resource):
 
 class Sales(Resource):
     def get(self,sale_id=None):
+
+        if not sale_id:
+            return make_response(jsonify({'sales': sales}), 200)
+        else:
+            sales.append(sample_sale)
+        
+            ''' search sale by sale id '''
+            sale=[sale for sale in sales if sale['id']==str(sale_id)]
+            if not sale:
+                 return make_response(jsonify({'error': 'sale record not found'}), 404)
+            else:
+                return make_response(jsonify({'sale': sale}), 200)
+
+
       
-        return make_response(jsonify({'sales': sales}), 200)
+        
 
 
     def post(self):
