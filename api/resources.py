@@ -1,9 +1,10 @@
 from flask import jsonify, make_response, request
 from flask_restful import Resource
-from models.models import Product,Sales
+from models.models import Product,Sales,User
+
 products = Product.all()
 sales = Sales.all()
-
+users=User.all()
 
 class ProductController(Resource):
     def get(self, product_id=None):
@@ -61,3 +62,11 @@ class SalesController(Resource):
                    }
         sales.append(sale)
         return make_response(jsonify({'message':'sale record created successfully'}), 201)
+
+
+class UserController(Resource):
+    def post(self):
+        pass
+
+    def get(self):
+        pass
