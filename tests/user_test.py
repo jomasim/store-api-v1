@@ -8,7 +8,8 @@ class UserTestCase(BaseTestCase):
             'id': '1',
             'name': 'joma simeon',
             'email': 'simjoms@gmail.com',
-            'phone': '+254728109567'
+            'phone': '+254728109567',
+            'username':'joma'
         }
         response=self.post('/api/v1/user',sample_user)
         self.assertEqual(response.status_code, 201)

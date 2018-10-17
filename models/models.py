@@ -29,7 +29,8 @@ sample_user={
     'id':'1',
     'name':'joma simeon',
     'email':'simjoms@gmail.com',
-    'phone':'+254728109567'
+    'phone':'+254728109567',
+    'username':'joma'
 }
 
 class Product():
@@ -48,5 +49,6 @@ class User():
     @staticmethod
     def all():
         users.append(sample_user)
+        return users
 
 
