@@ -34,3 +34,8 @@ class SaleTestCase(BaseTestCase):
         response=self.get('/api/v1/sales')
         self.assertEqual(response.status_code,200)
         self.assertEqual(response.mimetype,'application/json')
+    
+    def test_get_specific(self):
+        response=self.get('/api/v1/sales/1')
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.mimetype,'application/json')
