@@ -4,8 +4,16 @@ products = []
 
 
 class Product(Resource):
-    def get(self):
-        return make_response(jsonify({'products': products}), 200)
+    def get(self, product_id=None):
+        if not product_id:
+            return make_response(jsonify({'products': products}), 200)
+        else:
+            product = [
+                product for product in products if product['id']==str(product_id) ]
+            if not product:
+                return make_response(jsonify({'error': 'product not found'}), 404)
+            else:
+                return make_response(jsonify({'product': product}), 200)
 
     def post(self):
         data = request.get_json()
