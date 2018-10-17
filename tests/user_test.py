@@ -13,4 +13,5 @@ class UserTestCase(BaseTestCase):
         }
         response=self.post('/api/v1/user',sample_user)
         self.assertEqual(response.status_code, 201)
+        self.assertEqual(json.loads(response.data),{'message':'user created successfully'})
         self.assertEqual(response.mimetype,'application/json')
