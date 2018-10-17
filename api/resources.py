@@ -2,14 +2,26 @@ from flask import jsonify, make_response, request
 from flask_restful import Resource
 products = []
 
+''' sample product dict '''
+
+sample = {'id': '1', 'name': 'shirt', 'category': 'apparel', 'description': {
+    'color': 'black',
+    'size': '35',
+            'gender': 'male'
+}, 'price': '1200', 'quantity': '10'}
+
 
 class Product(Resource):
     def get(self, product_id=None):
         if not product_id:
             return make_response(jsonify({'products': products}), 200)
         else:
+            products.append(sample)
+
+            ''' search for product  using product_id '''
+            
             product = [
-                product for product in products if product['id']==str(product_id) ]
+                product for product in products if product['id'] == str(product_id)]
             if not product:
                 return make_response(jsonify({'error': 'product not found'}), 404)
             else:
