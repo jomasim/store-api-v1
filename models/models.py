@@ -1,6 +1,6 @@
 products = []
 sales = []
-
+users=[]
 ''' sample product dict '''
 
 sample_product = {'id': '1', 'name': 'shirt', 'category': 'apparel', 'description': {
@@ -25,6 +25,13 @@ sample_sale = {
             }
 }
 
+sample_user={
+    'id':'1',
+    'name':'joma simeon',
+    'email':'simjoms@gmail.com',
+    'phone':'+254728109567',
+    'username':'joma'
+}
 
 class Product():
     @staticmethod
@@ -37,4 +44,11 @@ class Sales():
     def all():
         sales.append(sample_sale)
         return sales
+
+class User():
+    @staticmethod
+    def all():
+        users.append(sample_user)
+        return users
+
 
