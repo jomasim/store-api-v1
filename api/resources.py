@@ -52,6 +52,7 @@ class SalesController(Resource):
         data = request.get_json()
         if not data:
             return make_response(jsonify({'error': 'invalid data'}), 422)
+
         sale_id = len(sales)+1
         sale = {'id': sale_id, 'user': data['user'], 'date_created': data['date_created'],
                 'line_items': data['line_items'],
@@ -69,7 +70,15 @@ class UserController(Resource):
         user = {'id': user_id, 'name': data['name'], 'email': data['email'],
                 'username': data['username'], 'phone': data['phone']
                 }
-        users.append(user)
-        return make_response(jsonify({'message': 'user created successfully'}), 201)
+
+        ''' check if user already exists '''
+        existing = [user for user in users if user['email'] == data['email']]
+        if not existing:
+            users.append(user)
+            return make_response(jsonify({'message': 'user created successfully'}), 201)
+        else:
+            return make_response(jsonify({'message': 'user exists'}), 409)
+
+       
     def get(self):
         pass
