@@ -31,9 +31,10 @@ sample_user={
     'name':'joma simeon',
     'email':'simjoms@gmail.com',
     'phone':'+254728109567',
-    'username':'joma'
+    'username':'joma',
+    'password':'1234'
 }
-
+users.append(sample_user)
 class Product():
     @staticmethod
     def all():

@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint
 from flask_restful import Resource, Api
 from flask_jwt_extended import JWTManager
-from api.resources import ProductController, SalesController, UserController
+from api.resources import ProductController, SalesController, UserController,AuthController
 from instance.api_config import api_config
 
 api_blueprint = Blueprint("store-api", __name__, url_prefix='/api/v1')
@@ -21,6 +21,9 @@ def create_app(config_setting):
 
     ''' setting api blueprint  '''
     api = Api(api_blueprint)
+
+    api.add_resource(AuthController, '/auth/',
+                     strict_slashes=False, endpoint='login')
 
     api.add_resource(UserController, '/user/',
                      strict_slashes=False, endpoint='post_user')
