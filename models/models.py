@@ -49,11 +49,8 @@ class Sales():
 
 class User():
 
-    def __init__(self,id,name,email,phone,username,password,is_admin=False):
+    def __init__(self,id,username,password,is_admin=False):
       self.id=id
-      self.name=name
-      self.email=email
-      self.phone=phone
       self.username=username
       self.password=password
 
