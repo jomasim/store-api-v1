@@ -32,7 +32,7 @@ sample_user={
     'email':'simjoms@gmail.com',
     'phone':'+254728109567',
     'username':'joma',
-    'password':'1234'
+    'password':generate_password_hash('1234')
 }
 users.append(sample_user)
 class Product():
@@ -55,7 +55,7 @@ class User():
       self.email=email
       self.phone=phone
       self.username=username
-      self.password=generate_password_hash(password)
+      self.password=password
 
     @staticmethod
     def all():
@@ -64,7 +64,7 @@ class User():
     @staticmethod
     def get_by_username(username):
         for user in users:
-            if user.get("username") == str(username):
+            if user['username'] == str(username):
                 return user
         return False
 
