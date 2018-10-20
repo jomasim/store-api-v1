@@ -14,7 +14,7 @@ def create_app(config_setting):
 
     app = Flask(__name__)
     app.config.from_object(api_config[config_setting])
-    app.config['JWT_SECRET_KEY']="SECRET KEY"
+    app.config['JWT_SECRET_KEY']='i\xfd\x0cO\xa5:I:\xad3>Z4j\xb1jI\x1bGZ\xc6\xe9\xcf\x9a'
 
 
     jwt.init_app(app)
