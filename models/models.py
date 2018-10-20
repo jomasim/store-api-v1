@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 products = []
 sales = []
 users=[]
@@ -30,9 +31,10 @@ sample_user={
     'name':'joma simeon',
     'email':'simjoms@gmail.com',
     'phone':'+254728109567',
-    'username':'joma'
+    'username':'joma',
+    'password':generate_password_hash('1234')
 }
-
+users.append(sample_user)
 class Product():
     @staticmethod
     def all():
@@ -46,9 +48,20 @@ class Sales():
         return sales
 
 class User():
+
+    def __init__(self,id,username,password,is_admin=False):
+      self.id=id
+      self.username=username
+      self.password=password
+
     @staticmethod
     def all():
         users.append(sample_user)
         return users
-
+    @staticmethod
+    def get_by_username(username):
+        for user in users:
+            if user['username'] == str(username):
+                return user
+        return False
 

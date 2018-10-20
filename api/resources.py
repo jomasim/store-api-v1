@@ -1,6 +1,9 @@
 from flask import jsonify, make_response, request
 from flask_restful import Resource
 from models.models import Product, Sales, User
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token,jwt_required
+import datetime
 
 products = Product.all()
 sales = Sales.all()
@@ -36,6 +39,7 @@ class ProductController(Resource):
 
 
 class SalesController(Resource):
+    @jwt_required
     def get(self, sale_id=None):
 
         if not sale_id:
@@ -47,7 +51,7 @@ class SalesController(Resource):
                 return make_response(jsonify({'error': 'sale record not found'}), 404)
             else:
                 return make_response(jsonify({'sale': sale}), 200)
-
+    @jwt_required
     def post(self):
         data = request.get_json()
         if not data:
@@ -79,6 +83,22 @@ class UserController(Resource):
         else:
             return make_response(jsonify({'message': 'user exists'}), 409)
 
-       
     def get(self):
         pass
+
+
+class AuthController(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data['username']
+        password = data['password']
+
+        user = User.get_by_username(username)
+
+        if user:
+            if check_password_hash(user['password'], password):
+                exp=datetime.timedelta(minutes=20)
+                token = create_access_token(user['username'],exp)
+                return make_response(jsonify({"message": "login successful",
+                                              "access_token": token}), 200)
+        return make_response(jsonify({"message": "invalid login"}), 401)
