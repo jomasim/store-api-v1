@@ -2,7 +2,7 @@ from flask import jsonify, make_response, request
 from flask_restful import Resource
 from models.models import Product, Sales, User
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token,jwt_required
 import datetime
 
 products = Product.all()
@@ -39,6 +39,7 @@ class ProductController(Resource):
 
 
 class SalesController(Resource):
+    @jwt_required
     def get(self, sale_id=None):
 
         if not sale_id:
@@ -50,7 +51,7 @@ class SalesController(Resource):
                 return make_response(jsonify({'error': 'sale record not found'}), 404)
             else:
                 return make_response(jsonify({'sale': sale}), 200)
-
+    @jwt_required
     def post(self):
         data = request.get_json()
         if not data:
