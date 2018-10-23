@@ -2,8 +2,9 @@ from flask import jsonify, make_response, request
 from flask_restful import Resource
 from models.models import Product, Sales, User
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token,jwt_required
+from flask_jwt_extended import create_access_token, jwt_required
 import datetime
+from api.request import Request
 
 products = Product.all()
 sales = Sales.all()
@@ -51,6 +52,7 @@ class SalesController(Resource):
                 return make_response(jsonify({'error': 'sale record not found'}), 404)
             else:
                 return make_response(jsonify({'sale': sale}), 200)
+
     @jwt_required
     def post(self):
         data = request.get_json()
@@ -69,19 +71,28 @@ class UserController(Resource):
     def post(self):
         user_id = len(users)+1
         data = request.get_json()
-        if not data:
-            return make_response(jsonify({'error': 'invalid data'}), 422)
-        user = {'id': user_id, 'name': data['name'], 'email': data['email'],
-                'username': data['username'], 'phone': data['phone']
-                }
+        request_schema = {'username': 'required',
+                          'name': 'required',
+                          'email':'required|email'
+                          }
+        validator=Request(data, request_schema)
+        
+        if validator.validate() == None :                 
 
-        ''' check if user already exists '''
-        existing = [user for user in users if user['email'] == data['email']]
-        if not existing:
-            users.append(user)
-            return make_response(jsonify({'message': 'user created successfully'}), 201)
+            user = {'id': user_id, 'name': data['name'], 'email': data['email'],
+                    'username': data['username'], 'phone': data['phone']
+                    }
+
+            ''' check if user already exists '''
+            existing = [user for user in users if user['email'] == data['email']]
+            if not existing:
+                users.append(user)
+                return make_response(jsonify({'message': 'user created successfully'}), 201)
+            else:
+                return make_response(jsonify({'message': 'user exists'}), 409)
         else:
-            return make_response(jsonify({'message': 'user exists'}), 409)
+             return make_response(jsonify(validator.validate()), 422)
+
 
     def get(self):
         pass
@@ -90,15 +101,24 @@ class UserController(Resource):
 class AuthController(Resource):
     def post(self):
         data = request.get_json()
-        username = data['username']
-        password = data['password']
+        request_schema = {'username': 'required',
+                          'password': 'required'}
 
-        user = User.get_by_username(username)
+        validator=Request(data, request_schema)
+        
+        if validator.validate() == None :
 
-        if user:
-            if check_password_hash(user['password'], password):
-                exp=datetime.timedelta(minutes=20)
-                token = create_access_token(user['username'],exp)
-                return make_response(jsonify({"message": "login successful",
-                                              "access_token": token}), 200)
-        return make_response(jsonify({"message": "invalid login"}), 401)
+            username = data['username']
+            password = data['password']
+
+            user = User.get_by_username(username)
+
+            if user:
+                if check_password_hash(user['password'], password):
+                    exp = datetime.timedelta(minutes=20)
+                    token = create_access_token(user['username'], exp)
+                    return make_response(jsonify({"message": "login successful",
+                                                "access_token": token}), 200)
+            return make_response(jsonify({"message": "invalid login"}), 401)
+        else:
+             return make_response(jsonify(validator.validate()), 422)
