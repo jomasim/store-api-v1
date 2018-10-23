@@ -7,7 +7,7 @@ class Request():
         self.request = request
         self.schema = schema
 
-    ''' this method accepts raw request and request rules '''
+    ''' this method validates all fields in a request '''
 
     def validate(self):
         ''' all request rules '''
@@ -59,25 +59,46 @@ class Request():
 
         if 'required' in field_rules and value == None or self.isEmpty(value):
             field_errors.append(field + " is required")
+        ''' if required field is empty or null return'''
+        if field_errors:
+            return field_errors
+
         elif 'email' in field_rules:
             if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", value):
                  field_errors.append(value + " not a valid email")
-               
+
         elif 'string' in field_rules:
-            if not isinstance(value,str):
+            if not isinstance(value, str):
                 field_errors.append(field + " should be a string")
         elif 'int' in field_rules:
             if not isinstance(value, int):
-                field_errors.append(field + " should be a string")
+                field_errors.append(field + " should be an integer")
 
-        elif 'min'in field_rules:
-            pass
-        elif 'max' in field_rules:
-            pass
+        if Request.get_rule_argument("min", field_rules):
+            min_length = Request.get_rule_argument("min", field_rules)
+            if len(str(value)) < int(min_length):
+                field_errors.append(field + " should have a minimum of "
+                                    + min_length + " characters")
+
+        if Request.get_rule_argument("max", field_rules):
+            max_length = Request.get_rule_argument("max", field_rules)
+            if len(str(value)) > int(max_length):
+                field_errors.append(field + " should have a maximum of "
+                                    + max_length + " characters")
+
         return field_errors
 
     def get_value(self, field_key):
         ''' get field value from request using key '''
         if field_key in self.request:
             return self.request[field_key]
+        return None
+
+    @staticmethod
+    def get_rule_argument(type, field_rules):
+        pieces = []
+        for rule in field_rules:
+            if rule.startswith(type):
+                pieces = rule.split(':')
+                return pieces[1]
         return None
