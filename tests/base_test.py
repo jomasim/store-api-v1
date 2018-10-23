@@ -7,7 +7,7 @@ class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client(self)
         url = "/api/v1/auth"
-        data = {"username": "joma", "password": "1234"}
+        data = {"username": "joma", "password": "123456"}
         response = self.client.post(url,
                                     data=json.dumps(data),
                                     content_type='application/json')

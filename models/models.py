@@ -32,7 +32,7 @@ sample_user={
     'email':'simjoms@gmail.com',
     'phone':'+254728109567',
     'username':'joma',
-    'password':generate_password_hash('1234')
+    'password':generate_password_hash('123456')
 }
 users.append(sample_user)
 class Product():

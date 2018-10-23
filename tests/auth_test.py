@@ -12,13 +12,13 @@ class TestAuth(BaseTestCase):
     def test_match_password(self):
         username = "joma"
         user = User.get_by_username(username)
-        password = "1234"
+        password = "123456"
         self.assertTrue(user)
         self.assertTrue(check_password_hash(user['password'], password))
 
     def test_login(self):
         user={"username": "joma",
-            "password": "1234"
+            "password": "123456"
                 }
         response = self.post('/api/v1/auth', data=user)
         self.assertTrue(response)
