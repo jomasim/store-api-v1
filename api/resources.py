@@ -102,7 +102,7 @@ class AuthController(Resource):
     def post(self):
         data = request.get_json()
         request_schema = {'username': 'required|string',
-                          'password': 'required|string'}
+                          'password': 'required|string|min:6|max:12'}
 
         validator=Request(data, request_schema)
         
