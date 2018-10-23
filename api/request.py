@@ -60,10 +60,9 @@ class Request():
         if 'required' in field_rules and value == None or self.isEmpty(value):
             field_errors.append(field + " is required")
         elif 'email' in field_rules:
-            if re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", value):
-                return True
-            else:
-                field_errors.append(value + " not a valid email")
+            if not re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", value):
+                 field_errors.append(value + " not a valid email")
+               
         elif 'string' in field_rules:
             if not isinstance(value,str):
                 field_errors.append(field + " should be a string")
