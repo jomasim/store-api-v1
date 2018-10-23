@@ -29,9 +29,9 @@ The API is available at [https://store-api-22.herokuapp.com/](https://store-api-
 
 clone repo from github
 
-`$ git clone https://github.com/jomasim/store-api-v1.git`
-`$ cd store-api-v1`
-`$ git checkout dev `
+- `$ git clone https://github.com/jomasim/store-api-v1.git`
+- `$ cd store-api-v1`
+- `$ git checkout dev `
 
 Create a virtual environment
 
