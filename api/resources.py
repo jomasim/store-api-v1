@@ -101,8 +101,8 @@ class UserController(Resource):
 class AuthController(Resource):
     def post(self):
         data = request.get_json()
-        request_schema = {'username': 'required',
-                          'password': 'required'}
+        request_schema = {'username': 'required|string',
+                          'password': 'required|string'}
 
         validator=Request(data, request_schema)
         
