@@ -28,16 +28,25 @@ class ProductController(Resource):
 
     def post(self):
         data = request.get_json()
-        if not data:
-            return make_response(jsonify({'error': 'invalid data'}), 422)
-        product_id = len(products)+1
-        product = {'id': product_id, 'name': data['name'], 'category': data['category'],
-                   'description': data['description'],
-                   'price': data['price'], 'quantity': data['quantity']
-                   }
-        products.append(product)
-        return make_response(jsonify({'products': products}), 201)
-
+        request_schema = {'name': 'required',
+                          'category': 'required',
+                          'description':'required',
+                          'price':'required',
+                          'quantity':'required'
+                          }
+        validator=Request(data, request_schema)
+        if validator.validate() == None :
+            if not data:
+                return make_response(jsonify({'error': 'invalid data'}), 422)
+            product_id = len(products)+1
+            product = {'id': product_id, 'name': data['name'], 'category': data['category'],
+                    'description': data['description'],
+                    'price': data['price'], 'quantity': data['quantity']
+                    }
+            products.append(product)
+            return make_response(jsonify({'products': products}), 201)
+        else:
+            return make_response(jsonify(validator.validate()), 422)
 
 class SalesController(Resource):
     @jwt_required
@@ -56,16 +65,21 @@ class SalesController(Resource):
     @jwt_required
     def post(self):
         data = request.get_json()
-        if not data:
-            return make_response(jsonify({'error': 'invalid data'}), 422)
-
-        sale_id = len(sales)+1
-        sale = {'id': sale_id, 'user': data['user'], 'date_created': data['date_created'],
-                'line_items': data['line_items'],
-                }
-        sales.append(sale)
-        return make_response(jsonify({'message': 'sale record created successfully'}), 201)
-
+        request_schema = {'user': 'required',
+                          'line_items': 'required',
+                          }
+        validator=Request(data, request_schema)
+        ''' check for errors in the request '''
+        if validator.validate() == None :    
+            sale_id = len(sales)+1
+            sale = {'id': sale_id, 'user': data['user'], 'date_created': data['date_created'],
+                    'line_items': data['line_items'],
+                    }
+            sales.append(sale)
+            return make_response(jsonify({'message': 'sale record created successfully'}), 201)
+        
+        else:
+            return make_response(jsonify(validator.validate()), 422)
 
 class UserController(Resource):
     def post(self):
@@ -91,7 +105,7 @@ class UserController(Resource):
             else:
                 return make_response(jsonify({'message': 'user exists'}), 409)
         else:
-             return make_response(jsonify(validator.validate()), 422)
+            return make_response(jsonify(validator.validate()), 422)
 
 
     def get(self):
@@ -121,4 +135,4 @@ class AuthController(Resource):
                                                 "access_token": token}), 200)
             return make_response(jsonify({"message": "invalid login"}), 401)
         else:
-             return make_response(jsonify(validator.validate()), 422)
+            return make_response(jsonify(validator.validate()), 422)
