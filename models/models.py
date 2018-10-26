@@ -35,11 +35,40 @@ sample_user={
     'password':generate_password_hash('123456')
 }
 users.append(sample_user)
+
 class Product():
+    def __init__(self):
+        self.entry={}
+        products.append(sample_product)
+    
+    def create(self,data):
+        self.entry['id']=len(products)+1
+        self.entry['name']=data['name']
+        self.entry['category']=data['category']
+        self.entry['description']=data['description']
+        self.entry['price']=data['price']
+        self.entry['quantity']=data['quantity']
+        products.append(self.entry)
+
     @staticmethod
     def all():
         products.append(sample_product)
         return products
+    
+    @staticmethod
+    def get_by_id(product_id):
+        for product in products:
+            if product['id'] == str(product_id):
+                return product
+        return False
+    
+    @staticmethod
+    def exists(product_id):
+        existing=None
+        if product_id !=None:
+             existing = [product for product in products if product['id'] == str(product_id)]
+        return existing
+
 
 class Sales():
     @staticmethod
@@ -53,7 +82,7 @@ class User(object):
         self.entry={}
 
     def create(self,data):
-
+        self.entry['id']=len(users)+1
         self.entry['name']=data['name']
         self.entry['username']=data['username']
         self.entry['email']=data['email']
@@ -62,7 +91,7 @@ class User(object):
         users.append(self.entry)
 
     @staticmethod
-    def exists(self,email):
+    def exists(email):
         existing=None
         if email !=None:
              existing = [user for user in users if user['email'] == email]

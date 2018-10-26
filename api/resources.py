@@ -18,12 +18,10 @@ class ProductController(Resource):
         else:
 
             ''' search for product  using product_id '''
-
-            product = [
-                product for product in products if product['id'] == str(product_id)]
-            if not product:
+            if not Product.exists(product_id):
                 return make_response(jsonify({'error': 'product not found'}), 404)
             else:
+                product=Product.get_by_id(product_id)
                 return make_response(jsonify({'product': product}), 200)
 
     def post(self):
@@ -36,14 +34,8 @@ class ProductController(Resource):
                           }
         validator=Request(data, request_schema)
         if validator.validate() == None :
-            if not data:
-                return make_response(jsonify({'error': 'invalid data'}), 422)
-            product_id = len(products)+1
-            product = {'id': product_id, 'name': data['name'], 'category': data['category'],
-                    'description': data['description'],
-                    'price': data['price'], 'quantity': data['quantity']
-                    }
-            products.append(product)
+            product=Product()
+            product.create(data)
             return make_response(jsonify({'products': products}), 201)
         else:
             return make_response(jsonify(validator.validate()), 422)
@@ -83,7 +75,6 @@ class SalesController(Resource):
 
 class UserController(Resource):
     def post(self):
-        user_id = len(users)+1
         data = request.get_json()
         request_schema = {'username': 'required',
                           'name': 'required',
@@ -94,16 +85,13 @@ class UserController(Resource):
         
         if validator.validate() == None :                 
 
-            data = {'id': user_id, 'name': data['name'], 'email': data['email'],
-                    'username': data['username'], 'phone': data['phone'],'password':data['password']
-                    }
-
             ''' check if user already exists '''
 
             if not User.exists(data['email']):
                 
                 ''' save user to model '''
-                User.create(data)
+                user=User()
+                user.create(data)
 
                 return make_response(jsonify({'message': 'user created successfully'}), 201)
             else:
