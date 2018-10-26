@@ -54,7 +54,7 @@ Running app
 
 # Documentation
 
-[Documentation](https://documenter.getpostman.com/view/3224897/RzZ1q2wN)
+Find api doumentation [here](https://documenter.getpostman.com/view/3224897/RzZ1q2wN)
 
 # Framework 
 Python Flask 
