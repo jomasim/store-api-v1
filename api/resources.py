@@ -87,20 +87,24 @@ class UserController(Resource):
         data = request.get_json()
         request_schema = {'username': 'required',
                           'name': 'required',
-                          'email':'required|email'
+                          'email':'required|email',
+                          'password':'required|min:6|max:12'
                           }
         validator=Request(data, request_schema)
         
         if validator.validate() == None :                 
 
-            user = {'id': user_id, 'name': data['name'], 'email': data['email'],
-                    'username': data['username'], 'phone': data['phone']
+            data = {'id': user_id, 'name': data['name'], 'email': data['email'],
+                    'username': data['username'], 'phone': data['phone'],'password':data['password']
                     }
 
             ''' check if user already exists '''
-            existing = [user for user in users if user['email'] == data['email']]
-            if not existing:
-                users.append(user)
+
+            if not User.exists(data['email']):
+                
+                ''' save user to model '''
+                User.create(data)
+
                 return make_response(jsonify({'message': 'user created successfully'}), 201)
             else:
                 return make_response(jsonify({'message': 'user exists'}), 409)

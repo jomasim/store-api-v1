@@ -9,7 +9,8 @@ class UserTestCase(BaseTestCase):
             'name': 'john doe',
             'email': 'doe@gmail.com',
             'phone': '+254728109567',
-            'username': 'john'
+            'username': 'john',
+            'password':'technics100'
         }
         response = self.post('/api/v1/user', sample_user)
         self.assertEqual(response.status_code, 201)
@@ -28,7 +29,9 @@ class UserTestCase(BaseTestCase):
             'name': 'joma simeon',
             'email': 'simjoms@gmail.com',
             'phone': '+254728109567',
-            'username': 'joma'
+            'username': 'joma',
+            'password':'technics100'
+
         }
         response = self.post('/api/v1/user', existing_user)
         self.assertEqual(response.status_code, 409)

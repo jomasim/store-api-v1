@@ -55,6 +55,17 @@ class User():
       self.password=password
 
     @staticmethod
+    def create(data):
+       return users.append(data)
+
+    @staticmethod
+    def exists(email):
+        existing=None
+        if email !=None:
+             existing = [user for user in users if user['email'] == email]
+        return existing
+
+    @staticmethod
     def all():
         users.append(sample_user)
         return users
