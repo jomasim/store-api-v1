@@ -47,28 +47,33 @@ class Sales():
         sales.append(sample_sale)
         return sales
 
-class User():
+class User(object):
+    def __init__(self):
+        users.append(sample_user)
+        self.entry={}
 
-    def __init__(self,id,username,password,is_admin=False):
-      self.id=id
-      self.username=username
-      self.password=password
+    def create(self,data):
+
+        self.entry['name']=data['name']
+        self.entry['username']=data['username']
+        self.entry['email']=data['email']
+        self.entry['password']=generate_password_hash(data['password'])
+        self.entry['phone']=data['phone']
+        users.append(self.entry)
 
     @staticmethod
-    def create(data):
-       return users.append(data)
-
-    @staticmethod
-    def exists(email):
+    def exists(self,email):
         existing=None
         if email !=None:
              existing = [user for user in users if user['email'] == email]
         return existing
 
+    ''' return all users in data structure '''
     @staticmethod
     def all():
-        users.append(sample_user)
         return users
+
+    ''' get user by username '''
     @staticmethod
     def get_by_username(username):
         for user in users:
