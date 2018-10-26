@@ -24,7 +24,7 @@ sample_sale = {
                     'selling_price': '1200'
                 }
             }
-}
+            }
 
 sample_user={
     'id':'1',
@@ -34,13 +34,17 @@ sample_user={
     'username':'joma',
     'password':generate_password_hash('123456')
 }
+
+''' sample items for running tests '''
+
+products.append(sample_product)
+sales.append(sample_sale)
 users.append(sample_user)
 
 class Product():
     def __init__(self):
         self.entry={}
-        products.append(sample_product)
-    
+        
     def create(self,data):
         self.entry['id']=len(products)+1
         self.entry['name']=data['name']
@@ -52,7 +56,6 @@ class Product():
 
     @staticmethod
     def all():
-        products.append(sample_product)
         return products
     
     @staticmethod
@@ -71,14 +74,37 @@ class Product():
 
 
 class Sales():
+    def __init__(self):
+        self.entry={}
+       
+    @staticmethod
+    def get_by_id(sale_id):
+        for sale in sales:
+            if sale['id'] == str(sale_id):
+                return sale
+        return False
+
+    def create(self,data):
+
+        self.entry['id']=len(sales)+1
+        self.entry['date_created']=data['date_created']
+        self.entry['user']=data['user']
+        self.entry['line_items']=data['line_items']
+        sales.append(self.entry)
+        
     @staticmethod
     def all():
-        sales.append(sample_sale)
         return sales
+
+    @staticmethod
+    def exists(sale_id):
+        existing=None
+        if sale_id !=None:
+           existing = [sale for sale in sales if sale['id'] == sale_id]
+        return existing
 
 class User(object):
     def __init__(self):
-        users.append(sample_user)
         self.entry={}
 
     def create(self,data):

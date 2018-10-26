@@ -48,10 +48,10 @@ class SalesController(Resource):
             return make_response(jsonify({'sales': sales}), 200)
         else:
             ''' search sale by sale id '''
-            sale = [sale for sale in sales if sale['id'] == str(sale_id)]
-            if not sale:
+            if not Sales.exists(str(sale_id)):
                 return make_response(jsonify({'error': 'sale record not found'}), 404)
             else:
+                sale=Sales.get_by_id(sale_id)
                 return make_response(jsonify({'sale': sale}), 200)
 
     @jwt_required
@@ -62,12 +62,9 @@ class SalesController(Resource):
                           }
         validator=Request(data, request_schema)
         ''' check for errors in the request '''
-        if validator.validate() == None :    
-            sale_id = len(sales)+1
-            sale = {'id': sale_id, 'user': data['user'], 'date_created': data['date_created'],
-                    'line_items': data['line_items'],
-                    }
-            sales.append(sale)
+        if validator.validate() == None :  
+            sale=Sales() 
+            sale.create(data)
             return make_response(jsonify({'message': 'sale record created successfully'}), 201)
         
         else:
