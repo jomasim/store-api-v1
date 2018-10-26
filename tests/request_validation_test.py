@@ -119,3 +119,14 @@ class ValidationTest(unittest.TestCase):
             'username': ['username should have a maximum of 5 characters'],
             'name': ['name should be a string', 'name should have a minimum of 4 characters']}},
             request.validate())
+            
+    def test_empty_string(self):
+        data = {"username": "", "password": "12340454", "name": "kim"}
+        request_schema = {'username': 'required|max:13',
+                          'password': 'required|max:20',
+                          'name': 'required|string|min:1|max:7',
+                          }
+        request = Request(data, request_schema)
+        self.assertEqual({'errors': {
+            'username': ['username is required']}}, request.validate())
+   
